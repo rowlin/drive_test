@@ -1,0 +1,1 @@
+This is very easy example Laravel Many To Many relationship 
