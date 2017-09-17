@@ -18,18 +18,18 @@
                                 <li style="display:none ; list-style: none;" class="box" id="q{{ ++$i}}">
                                     @foreach($item as $element)
                                         <h3>{!! $element->question !!}</h3>
-                                        <p><input type="checkbox" name="question[][{{ $element->id }}][1]" value="1">{!! $element->ans1 !!}</p>
+                                        <p><input type="checkbox" name="question[{{ $element->id }}][1]" value="1">{!! $element->ans1 !!}</p>
 
                                         <p><input type="checkbox"
-                                                  name="question[][{{ $element->id }}][2]" value="1">{!! $element->ans2 !!}</p>
+                                                  name="question[{{ $element->id }}][2]" value="1">{!! $element->ans2 !!}</p>
                                         <p><input type="checkbox"
-                                                  name="question[][{{ $element->id }}][3]" value="1">{!! $element->ans3 !!}</p>
+                                                  name="question[{{ $element->id }}][3]" value="1">{!! $element->ans3 !!}</p>
 
                                         @if( $element->ans4 != null || $element->ans4 != '')
-                                            <p><input type="checkbox" name="question[][{{ $element->id }}][4]"
+                                            <p><input type="checkbox" name="question[{{ $element->id }}][4]"
                                                       value="1">{!! $element->ans4 !!}</p>
                                         @else
-                                            <input name="question[][{{ $element->id }}][4]" value="1" hidden>
+                                            <input name="question[{{ $element->id }}][4]" value="1" hidden>
                                         @endif
                                     @endforeach
                                 </li>
@@ -45,13 +45,7 @@
 
 
 @section('script')
-<script>
-    $(document).ready(function(){
-    $('input[type=checkbox]').click(function(){
-    $(this).val(this.checked ? 1 : 0);
-    });
-    });
-</script>
+
 
     <script type="application/javascript">
   var next_button = document.getElementById('next');

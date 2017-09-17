@@ -39,9 +39,20 @@ class QuestionController extends Controller
 
 
 
-    public function check(Question $question , $position ,$value ){
-        if($question->answers->ans_ . $position == $value) return true;
-        else return false;
+    public function check($question , $position ,$value ){
+        $current = Question::where('id', $question)->first();
+        switch ($position){
+            case 1 : $ans = $current->answers->ans_1; break;
+            case 2 : $ans = $current->answers->ans_2; break;
+            case 3 : $ans = $current->answers->ans_3; break;
+            case 4 : $ans = $current->answers->ans_4; break;
+            default : dd($position);
+        }
+
+        if($value == $ans) {
+           return "ok";
+        }
+        else return "err";
     }
 
 
@@ -49,19 +60,25 @@ class QuestionController extends Controller
     {
         $result = array();
         $cur_questions = array();
+        $check_cur_arr = array();
         $count = 1;
-        foreach ($request->question as $question){
-            $current =  Question::where('id' ,key($question))->first();
-            $cur_questions[$count++] = $current;
+
+        foreach ($request->question as  $question => $value){
+           $current =  Question::where('id' ,$question)->first();
+
+            if(!in_array($question, $check_cur_arr )) {
+                $check_cur_arr[$count] = $current->id;
+                $cur_questions[$count++]= $current;
+            }
             for($i = 1 ; $i<= 4 ; $i++ ) {
-                if (isset($question[key($question)][$i])) {
-                    $result[$current->id][$i] = $this->check($current, $i ,  $question[key($question)][$i]);
+                if (isset($request->question[$question][$i])) {
+                    $result[$question][$i] = $this->check($question , $i ,  $value[$i]);
                 } else {
-                    $result[$current->id][$i] = $this->check($current, $i , 0);
+                    $result[$question][$i] = $this->check($question , $i , 0);
                 };
             }
         }
-        return view('result.index', compact($result , $cur_questions ));
+        return view('result.index', compact('result' , 'cur_questions'));
     }
 
 
