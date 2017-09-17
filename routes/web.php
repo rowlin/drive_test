@@ -17,7 +17,7 @@ Route::get('test', 'TestController@index')->name('test');
 Route::get('start/{id}', 'QuestionController@index')->name('start');
 Route::get('questions','QuestionController@all' )->name('question');
 Route::post('form', 'QuestionController@test')->name('form');
-
+Route::get('dont_show/{id}', 'QuestionController@dont_show');
 
 Route::get('/', function () {
     return view('start');
