@@ -1,82 +1,81 @@
 @extends('layout.welcome')
 
+
+
 @section('content')
 
     <div class="row">
-        <h2 style="text-align: center">Тесты</h2>
-        <p class="text-center">Добавлено {{ count(\App\Question::all()) }} вопросов</p>
-        <div class="container">
-            <div class="row">
-
+     <div class="container">
                 <form action="{{ url('form') }}" method="post">
                     <?php $i = 0; ?>
-
                     <ul id="listContainer">
 
-                        <div id="q{{ ++$i }}">
-                            <li style="display:list-item; list-style: none;">
-                                Начать тест
-
+                            <li style="display:list-item; list-style: none;" class="box" id="q{{ $i }}">
+                             <h1>Поехали !</h1>
                             </li>
-                        </div>
-
                         @foreach($test as $item )
 
-                            <div class="box" id="q{{ $i++ }}">
-                                <li style="display:none ; list-style: none;">
+                                <li style="display:none ; list-style: none;" class="box" id="q{{ ++$i}}">
                                     @foreach($item as $element)
-                                        <p>{!! $element->question !!}</p>
+                                        <h3>{!! $element->question !!}</h3>
+                                        <p><input type="checkbox" name="question[][{{ $element->id }}][1]" value="1">{!! $element->ans1 !!}</p>
+
                                         <p><input type="checkbox"
-                                                  name="question{{ $element->id }}[1]">{!! $element->ans1 !!}</p>
+                                                  name="question[][{{ $element->id }}][2]" value="1">{!! $element->ans2 !!}</p>
                                         <p><input type="checkbox"
-                                                  name="question{{ $element->id }}[2]">{!! $element->ans2 !!}</p>
-                                        <p><input type="checkbox"
-                                                  name="question{{ $element->id }}[3]">{!! $element->ans3 !!}</p>
+                                                  name="question[][{{ $element->id }}][3]" value="1">{!! $element->ans3 !!}</p>
 
                                         @if( $element->ans4 != null || $element->ans4 != '')
-                                            <p><input type="checkbox" name="question{{ $element->id }}[]"
-                                                      value="ans4">{!! $element->ans4 !!}</p>
+                                            <p><input type="checkbox" name="question[][{{ $element->id }}][4]"
+                                                      value="1">{!! $element->ans4 !!}</p>
                                         @else
-                                            <input name="question{{ $element->id }}[]" value="0" hidden>
+                                            <input name="question[][{{ $element->id }}][4]" value="1" hidden>
                                         @endif
                                     @endforeach
                                 </li>
-                            </div><!--box-->
-
-
                         @endforeach
                     </ul>
-
+                        {{ csrf_field() }}
                     <a class="btn btn-default"   id="next">next</a>
-                        <input type="hidden" name="_token" id="_token" value="{!! csrf_field() !!}" >
-
-                        <button type="submit" id="sub_form"  >show</button>
+                    <button type="submit" id="send" class="btn bg-primary" style="float: right;" >Send</button>
                 </form>
-
-            </div><!--ROW-->
-        </div>
-    </div>
+        </div><!--container-->
+    </div><!--row-->
 @endsection
 
 
 @section('script')
-    <script type="application/javascript">
-      //  var FirstItem = document.getElementsById('q0');
-      //  FirstItem.style.display = "list-item";
-        document.getElementById('next').addEventListener("click", function () {
+<script>
+    $(document).ready(function(){
+    $('input[type=checkbox]').click(function(){
+    $(this).val(this.checked ? 1 : 0);
+    });
+    });
+</script>
 
+    <script type="application/javascript">
+  var next_button = document.getElementById('next');
+  var send_button = document.getElementById('send');
+      //send_button.style.visibility = "hidden";
+      next_button.addEventListener("click", function () {
             var listContainer = document.getElementById("listContainer");
             var listItem = listContainer.getElementsByTagName("li");
-            //var Submit = = document.getElementsById('sub_form');
-            for (var i = 0; i < listItem.length - 1; i++) {
+            for (var i = 0; i < listItem.length; i++) {
                 if (listItem[i].style.display == "list-item") {
                     listItem[i].style.display = "none";
                     listItem[i + 1].style.display = "list-item";
-                    if (i == listItem.length - 2)
-                        this.disabled = "true";
+                    //send_button.style.visibility = "hidden";
+                    console.log(i, listItem.length);
+                    if (i >= listItem.length - 2)
+                        next_button.style.display = "none";
+                        send_button.style.visibility = "visible";
                     break;
                 }
             }
+        });
+
+        send_button.addEventListener("click" , function (){
+
         });
     </script>
 @endsection

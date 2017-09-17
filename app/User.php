@@ -14,13 +14,6 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $table = 'User';
-
-    protected $fillable = [ 'name' , 'surname'];
-
-    public function ainet(){
-        return $this->belongsToMany('App\Ainet', 'pivot_user_ainet');
-    }
-
+ 
 
 }
