@@ -18,7 +18,7 @@
                                 <li style="display:none ; list-style: none;" class="box" id="q{{ ++$i}}">
 
                                        <div class="container">
-                                       @if($element_image != "")
+                                       @if($element->image != "")
                                         <img src="{{ url($element->image) }}" alt="{{ $element->question }}" style="max-width: 200px;">
                                        @endif
                                         <span style="font-size: 1.3em; ">{!! $element->question !!}</span>
