@@ -11,11 +11,14 @@ class QuestionController extends Controller
 {
     function getrand($limit, $max_num)
     {
-        $used_nums = array();
-        while ($limit) {
-            $random = rand(0, $max_num);
-            $limit -= !isset($used_nums[$random]);
-            $used_nums[$random] = Question::where('id', $random)->get();
+        $used_num = array();
+        for(;$limit != 0;) {
+            $random = rand(1, $max_num);
+            if(!empty($random)) {
+                    $used_nums[--$limit] = $random;
+            }else{
+                dd("rand is null" , $random);
+            }
         }
         return $used_nums;
     }
@@ -29,10 +32,14 @@ class QuestionController extends Controller
     //ma можно определять на старте
     public function index($limit = 10)
     {
+        $i=0;
         $questions = Question::all();
-        //rand to test 3 answers
         $max_num = count($questions);
-        $test = $this->getrand($limit, $max_num);
+        $rand_val = $this->getrand($limit, $max_num);
+            foreach ($rand_val as $val){
+                $test[$val] = Question::where('id' , $val)->first();
+            }
+
         return view('test.start', compact('test'));
     }
 
@@ -55,6 +62,15 @@ class QuestionController extends Controller
         else return "err";
     }
 
+    
+    //
+
+    public function dont_show($id){
+       $question =  Question::where('id', $id)->first();
+       $question->public = '1';
+       $question->save();
+       return redirect()->back();
+    }
 
     public function test(Request $request)
     {

@@ -28,12 +28,14 @@
 
                 <div class="box">
                     <h3>{!! $question->question !!}</h3>
+
                     @if($result[$question->id][1] == "ok" )
                         <p id="green"><input type="checkbox" checked>
                     @else
                         <p id="red"><input type="checkbox">
                     @endif
                             {!! $question->ans1 !!}</p>
+
 
                         @if($result[$question->id][2] == "ok" )
                             <p id="green"><input type="checkbox" checked>
@@ -64,8 +66,6 @@
                              $result[$question->id][4] == "ok" )
                             <a href="{{ url('dont_show/' .  $question->id ) }}" class="btn btn-primary">Не показывать</a>
                         @endif
-
-
 
                         </div><!--box-->
             @endforeach

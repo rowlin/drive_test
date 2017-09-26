@@ -13,11 +13,16 @@
                             <li style="display:list-item; list-style: none;" class="box" id="q{{ $i }}">
                              <h1>Поехали !</h1>
                             </li>
-                        @foreach($test as $item )
+                        @foreach($test as $element )
 
                                 <li style="display:none ; list-style: none;" class="box" id="q{{ ++$i}}">
-                                    @foreach($item as $element)
-                                        <h3>{!! $element->question !!}</h3>
+
+                                       <div class="container">
+                                       @if($element_image != "")
+                                        <img src="{{ url($element->image) }}" alt="{{ $element->question }}" style="max-width: 200px;">
+                                       @endif
+                                        <span style="font-size: 1.3em; ">{!! $element->question !!}</span>
+                                        </div><!--container-->
                                         <p><input type="checkbox" name="question[{{ $element->id }}][1]" value="1">{!! $element->ans1 !!}</p>
 
                                         <p><input type="checkbox"
@@ -31,7 +36,6 @@
                                         @else
                                             <input name="question[{{ $element->id }}][4]" value="1" hidden>
                                         @endif
-                                    @endforeach
                                 </li>
                         @endforeach
                     </ul>
